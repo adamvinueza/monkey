@@ -17,3 +17,10 @@ identifier or a number can be generalized so that the same function can be used
 to update the `Lexer`: just pass in the character-identifying function. If we
 want to identify a number, pass in `isNumber`; to identify an identifier, pass
 in `isLetter`.
+
+## Finished!
+
+Extended the language in the requisite ways and wrote the preliminary REPL
+program. Now on to Chapter 2!
+
+This is usually where I get stuck. So soldier on, please!
