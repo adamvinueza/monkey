@@ -2,6 +2,10 @@ package lexer
 
 import "github.com/adamvinueza/monkey/token"
 
+// Lexer is a lexical analyzer, or "scanner".
+//
+// Note that because Lexer has state, its methods all have pointer receivers.
+// (See https://golang.org/doc/faq#methods_on_values_or_pointers for details.)
 type Lexer struct {
 	input        string
 	position     int  // current position in input (points to current char)
