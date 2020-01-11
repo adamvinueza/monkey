@@ -30,7 +30,7 @@ let result = add(five, ten);
 		{token.SEMICOLON, ";"},
 		{token.LET, "let"},
 		{token.IDENT, "add"},
-        {token.ASSIGN, "="},
+		{token.ASSIGN, "="},
 		{token.FUNCTION, "fn"},
 		{token.LPAREN, "("},
 		{token.IDENT, "x"},
@@ -55,7 +55,7 @@ let result = add(five, ten);
 		{token.RPAREN, ")"},
 		{token.SEMICOLON, ";"},
 		{token.EOF, ""},
-    }
+	}
 	l := New(input)
 	for i, tt := range tests {
 		tok := l.NextToken()
