@@ -31,11 +31,11 @@ are:
 ```
 type Token struct {
     // Type represents the type of token, e.g. INT, TRUE, IDENT, IF, LET.
-	Type    TokenType
+    Type    TokenType
 
     // Literal represents the string value of the token as it occurs in the
     // program text, e.g. "int","true", "x", "if", "let".
-	Literal string
+    Literal string
 }
 
 // TokeType is just an alias for a string, shorthand for the enumeration of
