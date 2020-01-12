@@ -42,21 +42,25 @@ type Token struct {
 // token type names.
 type TokenType string
 ```
-The lexer iterates through the program text, detects tokens, and adds them to a
-slice of tokens. It's a stateful struct designed to consume text and produce
-tokens:
+The lexer is a stateful struct designed to consume text and produce tokens.
 ```
 type Lexer struct {
     input        string // program text input
     position     int    // current index of the lexer in the program text
     readPosition int    // position + 1
 }
+
+func (l *Lexer) NextToken() token.Token {
+    var tok token.Token
+    // [ consumes the input text and produces a token from it ... ]
+    return tok
+}
 ```
-The lexer simply consumes text and returns tokens, in the following fashion:
+The lexer is essentially a string iterator that produces tokens along the way.
+This is how it produces a token:
 ```
-   1. Creates a Token.
-   2. Skips any white space it sees.
-   3. Looks at the current character:
+   1. Skips any white space it sees.
+   2. Looks at the current character:
       - if it's a single-character Token, creates that Token.
       - if it's a multi-character non-identifier Token, peeks at the next
         character and creates the right one, then consumes a character.
@@ -67,8 +71,7 @@ The lexer simply consumes text and returns tokens, in the following fashion:
         non-identifier character, then creates an identifier or keyword.
       - if it can't identify the type of Token in any of these processes, it
         creates a special type of Token indicating it's illegal.
-    4. Consumes the current character.
-    5. Returns the created Token.
+    3. Consumes the current character.
 ```
 I also created a primitive REPL, with a prompt and an ability to read what's
 typed in and print out the lexed output.
