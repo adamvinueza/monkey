@@ -51,14 +51,9 @@ let 838383;
 `
 	p := New(lexer.New(input))
 
-	expectedStatementsCount := 3
 	program := p.ParseProgram()
 	if program == nil {
 		t.Fatalf("ParseProgram() returned nil")
-	}
-	if len(program.Statements) != expectedStatementsCount {
-		t.Fatalf("Expected program.Statements to have %d statements, found %d",
-			expectedStatementsCount, len(program.Statements))
 	}
 
 	tests := []struct {
@@ -140,5 +135,63 @@ return 993322;
 			t.Errorf("returnStmt.TokenLiteral not 'return', found %q",
 				returnStmt.TokenLiteral())
 		}
+	}
+}
+
+func TestIdentifierExpression(t *testing.T) {
+	p := New(lexer.New("foobar;"))
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("program has not enough statements, found %d",
+			len(program.Statements))
+	}
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("program.Statements[0] not *ast.ExpressionStatement, found %T",
+			program.Statements[0])
+	}
+
+	ident, ok := stmt.Expression.(*ast.Identifier)
+	if !ok {
+		t.Fatalf("exp not *ast.Identifier, found %T",
+			stmt.Expression)
+	}
+	if ident.Value != "foobar" {
+		t.Fatalf("ident.Value not %s, found %s", "foobar", ident.Value)
+	}
+	if ident.TokenLiteral() != "foobar" {
+		t.Fatalf("ident.TokenLiteral not %s, found %s", "foobar",
+			ident.TokenLiteral())
+	}
+}
+
+func TestIntegerLiteralExpression(t *testing.T) {
+	p := New(lexer.New("5;"))
+	program := p.ParseProgram()
+	checkParserErrors(t, p)
+
+	if len(program.Statements) != 1 {
+		t.Fatalf("program has not enough statements, found %d",
+			len(program.Statements))
+	}
+	stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+	if !ok {
+		t.Fatalf("program.Statements[0] not *ast.ExpressionStatement, found %T",
+			program.Statements[0])
+	}
+
+	literal, ok := stmt.Expression.(*ast.IntegerLiteral)
+	if !ok {
+		t.Fatalf("exp not *ast.IntegerLiteral, found %T",
+			stmt.Expression)
+	}
+	if literal.Value != 5 {
+		t.Fatalf("literal.Value not %d, found %d", 5, literal.Value)
+	}
+	if literal.TokenLiteral() != "5" {
+		t.Fatalf("literal.TokenLiteral not %s, found %s", "5",
+			literal.TokenLiteral())
 	}
 }
