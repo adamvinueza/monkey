@@ -23,4 +23,52 @@ in `isLetter`.
 Extended the language in the requisite ways and wrote the preliminary REPL
 program. Now on to Chapter 2!
 
-This is usually where I get stuck. So soldier on, please!
+## What I've built so far
+
+I've built a lexer that transforms a string of text into tokens of the Monkey
+language, in order of occurrence in the text. The key data structures for tokens
+are:
+```
+type Token struct {
+    // Type represents the type of token, e.g. INT, TRUE, IDENT, IF, LET.
+	Type    TokenType
+
+    // Literal represents the string value of the token as it occurs in the
+    // program text, e.g. "int","true", "x", "if", "let".
+	Literal string
+}
+
+// TokeType is just an alias for a string, shorthand for the enumeration of
+// token type names.
+type TokenType string
+```
+The lexer iterates through the program text, detects tokens, and adds them to a
+slice of tokens. It's a stateful struct designed to consume text and produce
+tokens:
+```
+type Lexer struct {
+    input        string // program text input
+    position     int    // current index of the lexer in the program text
+    readPosition int    // position + 1
+}
+```
+The lexer simply consumes text and returns tokens, in the following fashion:
+```
+   1. Creates a Token.
+   2. Skips any white space it sees.
+   3. Looks at the current character:
+      - if it's a single-character Token, creates that Token.
+      - if it's a multi-character non-identifier Token, peeks at the next
+        character and creates the right one, then consumes a character.
+        (Consuming a character bumps the internal position of
+        the lexer.)
+      - if it's a multi-character identifier Token (such as a keyword or
+        variable identifier), consumes characters until it comes to a
+        non-identifier character, then creates an identifier or keyword.
+      - if it can't identify the type of Token in any of these processes, it
+        creates a special type of Token indicating it's illegal.
+    4. Consumes the current character.
+    5. Returns the created Token.
+```
+I also created a primitive REPL, with a prompt and an ability to read what's
+typed in and print out the lexed output.

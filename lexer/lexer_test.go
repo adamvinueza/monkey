@@ -21,7 +21,8 @@ if (5 < 10) {
     return true;
 } else {
     return false;
-}`
+}
+bana&a   "ohmygod!"`
 	tests := []struct {
 		expectedType    token.TokenType
 		expectedLiteral string
@@ -91,6 +92,13 @@ if (5 < 10) {
 		{token.FALSE, "false"},
 		{token.SEMICOLON, ";"},
 		{token.RBRACE, "}"},
+		{token.IDENT, "bana"},
+		{token.ILLEGAL, "&"},
+		{token.IDENT, "a"},
+        {token.ILLEGAL, "\""},
+        {token.IDENT, "ohmygod"},
+		{token.BANG, "!"},
+        {token.ILLEGAL, "\""},
 		{token.EOF, ""},
 	}
 	l := New(input)
