@@ -1,18 +1,17 @@
 package parser
 
 import (
-	"fmt"
 	"testing"
 
 	"github.com/adamvinueza/monkey/ast"
 	"github.com/adamvinueza/monkey/lexer"
 )
 
-func TestLetStatement(t *testing.T) {
+func TestLetStatementGoodInput(t *testing.T) {
 	input := `
-let x 5;
-let = 10;
-let 838383;
+let x = 5;
+let y= 10;
+let foobar = 838383;
 `
 	p := New(lexer.New(input))
 
@@ -44,6 +43,41 @@ let 838383;
 	}
 }
 
+func TestLetStatementBadInput(t *testing.T) {
+	input := `
+let x 5;
+let = 10;
+let 838383;
+`
+	p := New(lexer.New(input))
+
+	expectedStatementsCount := 3
+	program := p.ParseProgram()
+	if program == nil {
+		t.Fatalf("ParseProgram() returned nil")
+	}
+	if len(program.Statements) != expectedStatementsCount {
+		t.Fatalf("Expected program.Statements to have %d statements, found %d",
+			expectedStatementsCount, len(program.Statements))
+	}
+
+	tests := []struct {
+        expectedError string
+	}{
+        {"expected next token to be =, found INT"},
+        {"expected next token to be IDENT, found ="},
+        {"expected next token to be IDENT, found INT"},
+	}
+
+    errors := p.Errors()
+	for i, tt := range tests {
+        if errors[i] != tt.expectedError {
+            t.Fatalf("Expected error msg '%s', found '%s'",
+                tt.expectedError, errors[i])
+        }
+	}
+}
+
 func checkParserErrors(t *testing.T, p *Parser) {
     errors := p.Errors()
     if len(errors) == 0 {
@@ -58,9 +92,6 @@ func checkParserErrors(t *testing.T, p *Parser) {
 }
 
 func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
-	l := s.(*ast.LetStatement)
-	fmt.Printf("testLetStatement for '%s', name='%s', value='%s'\n",
-		l.TokenLiteral(), l.Name, l.Value)
 	if s.TokenLiteral() != "let" {
 		t.Errorf("Expected s.TokenLiteral() to be 'let', found '%s'",
 			s.TokenLiteral())
