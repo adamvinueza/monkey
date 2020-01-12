@@ -71,5 +71,6 @@ This is how it produces a token:
       - if it can't identify the type of Token in any of these processes, it
         creates a special type of Token indicating it's illegal.
     3. Consumes the current character.
+
 I also created a primitive REPL, with a prompt and an ability to read what's
 typed in and print out the lexed output.
