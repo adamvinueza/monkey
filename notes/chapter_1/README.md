@@ -58,20 +58,18 @@ func (l *Lexer) NextToken() token.Token {
 ```
 The lexer is essentially a string iterator that produces tokens along the way.
 This is how it produces a token:
-```
    1. Skips any white space it sees.
    2. Looks at the current character:
       - if it's a single-character Token, creates that Token.
-      - if it's a multi-character non-identifier Token, peeks at the next
+      - if it's a two-character non-identifier Token, peeks at the next
         character and creates the right one, then consumes a character.
         (Consuming a character bumps the internal position of
         the lexer.)
       - if it's a multi-character identifier Token (such as a keyword or
         variable identifier), consumes characters until it comes to a
-        non-identifier character, then creates an identifier or keyword.
+        non-identifier character, then creates an identifier or keyword token.
       - if it can't identify the type of Token in any of these processes, it
         creates a special type of Token indicating it's illegal.
     3. Consumes the current character.
-```
 I also created a primitive REPL, with a prompt and an ability to read what's
 typed in and print out the lexed output.
