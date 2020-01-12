@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/adamvinueza/monkey/ast"
@@ -9,14 +10,16 @@ import (
 
 func TestLetStatement(t *testing.T) {
 	input := `
-let x = 5;
-let y = 10;
-let foobar = 838383;
+let x 5;
+let = 10;
+let 838383;
 `
 	p := New(lexer.New(input))
 
 	expectedStatementsCount := 3
 	program := p.ParseProgram()
+    checkParserErrors(t, p)
+
 	if program == nil {
 		t.Fatalf("ParseProgram() returned nil")
 	}
@@ -25,7 +28,7 @@ let foobar = 838383;
 			expectedStatementsCount, len(program.Statements))
 	}
 
-	test := []struct {
+	tests := []struct {
 		expectedIdentifier string
 	}{
 		{"x"},
@@ -35,16 +38,32 @@ let foobar = 838383;
 
 	for i, tt := range tests {
 		stmt := program.Statements[i]
-		if !testLetStatemnt(t, stmt, tt.expectedIdentifier) {
+		if !testLetStatement(t, stmt, tt.expectedIdentifier) {
 			return
 		}
 	}
 }
 
+func checkParserErrors(t *testing.T, p *Parser) {
+    errors := p.Errors()
+    if len(errors) == 0 {
+        return
+    }
+
+    t.Errorf("parser has %d errors", len(errors))
+    for _, msg := range errors {
+        t.Errorf("parser error: %q", msg)
+    }
+    t.FailNow()
+}
+
 func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
+	l := s.(*ast.LetStatement)
+	fmt.Printf("testLetStatement for '%s', name='%s', value='%s'\n",
+		l.TokenLiteral(), l.Name, l.Value)
 	if s.TokenLiteral() != "let" {
-        t.Errorf("Expected s.TokenLiteral() to be 'let', found '%s'",
-        s.TokenLteral())
+		t.Errorf("Expected s.TokenLiteral() to be 'let', found '%s'",
+			s.TokenLiteral())
 		return false
 	}
 	letStmt, ok := s.(*ast.LetStatement)
@@ -57,10 +76,10 @@ func testLetStatement(t *testing.T, s ast.Statement, name string) bool {
 			letStmt.Name.Value)
 		return false
 	}
-    if letStmt.Name.TokenLiteral() != name {
+	if letStmt.Name.TokenLiteral() != name {
 		t.Errorf("letStmt.Name.TokenLiteral() not '%s', found '%s'", name,
 			letStmt.Name.TokenLiteral())
-        }
-    }
-
+		return false
+	}
+	return true
 }
