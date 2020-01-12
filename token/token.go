@@ -2,18 +2,22 @@ package token
 
 import "fmt"
 
+// TokenType represents the type of lexical token.
 type TokenType string
 
+// Token represents a lexical token, such as a keyword, operator, or semicolon.
 type Token struct {
 	Type    TokenType
 	Literal string
 }
 
+// Returns the string value of this Token.
 func (t Token) String() string {
-    return fmt.Sprintf(`Type: [%s] | Literal: '%s'`, t.Type, t.Literal)
+	return fmt.Sprintf(`Type: [%s] | Literal: '%s'`, t.Type, t.Literal)
 }
 
 const (
+	// Miscellaneous
 	ILLEGAL = "ILLEGAL"
 	EOF     = "EOF"
 
@@ -37,6 +41,7 @@ const (
 	COMMA     = ","
 	SEMICOLON = ";"
 
+	// Parentheses and Brackets
 	LPAREN = "("
 	RPAREN = ")"
 	LBRACE = "{"
@@ -62,6 +67,7 @@ var keywords = map[string]TokenType{
 	"return": RETURN,
 }
 
+// LookupIdent returns either the appropriate keyword TokenType or else IDENT.
 func LookupIdent(ident string) TokenType {
 	if tok, ok := keywords[ident]; ok {
 		return tok

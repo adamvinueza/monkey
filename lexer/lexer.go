@@ -13,32 +13,14 @@ type Lexer struct {
 	ch           byte // current char being read
 }
 
+// New returns a Lexer that will analyze the specified input.
 func New(input string) *Lexer {
 	l := &Lexer{input: input}
 	l.readChar()
 	return l
 }
 
-func (l *Lexer) readChar() {
-	// current char is null if we've gone over the end
-	if l.readPosition >= len(l.input) {
-		l.ch = 0
-	} else {
-		// set the char to the current position
-		l.ch = l.input[l.readPosition]
-	}
-	// move the position to the next char (or the end of the string)
-	l.position = l.readPosition
-	l.readPosition += 1
-}
-
-func (l *Lexer) peekChar() byte {
-    if l.readPosition >= len(l.input) {
-        return 0
-    }
-    return l.input[l.readPosition]
-}
-
+// NextToken returns the next token found in the input.
 func (l *Lexer) NextToken() token.Token {
 	var tok token.Token
 
@@ -108,6 +90,26 @@ func (l *Lexer) NextToken() token.Token {
 	l.readChar()
 	// return the token created from char just read
 	return tok
+}
+
+func (l *Lexer) readChar() {
+	// current char is null if we've gone over the end
+	if l.readPosition >= len(l.input) {
+		l.ch = 0
+	} else {
+		// set the char to the current position
+		l.ch = l.input[l.readPosition]
+	}
+	// move the position to the next char (or the end of the string)
+	l.position = l.readPosition
+	l.readPosition++
+}
+
+func (l *Lexer) peekChar() byte {
+	if l.readPosition >= len(l.input) {
+		return 0
+	}
+	return l.input[l.readPosition]
 }
 
 func (l *Lexer) skipWhitespace() {
