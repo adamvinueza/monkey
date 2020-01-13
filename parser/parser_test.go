@@ -44,6 +44,14 @@ let foobar = 838383;
 }
 
 func TestLetStatementBadInput(t *testing.T) {
+	// Four errors are here:
+	//
+	// statement 1 - when looking for an = parser finds 5
+	// statement 2 - when looking for an identifier parser finds =, so parsing
+	//               "let" returns prematurely
+	// statement 2 - = is treated first like a statement and then like an
+	//               expression, but there is no prefix function for it
+	// statement 3 - when looking for an identifier parser finds 838383
 	input := `
 let x 5;
 let = 10;
@@ -61,6 +69,7 @@ let 838383;
 	}{
 		{"expected next token to be =, found INT"},
 		{"expected next token to be IDENT, found ="},
+		{"no prefix parse function for = found"},
 		{"expected next token to be IDENT, found INT"},
 	}
 
@@ -193,5 +202,34 @@ func TestIntegerLiteralExpression(t *testing.T) {
 	if literal.TokenLiteral() != "5" {
 		t.Fatalf("literal.TokenLiteral not %s, found %s", "5",
 			literal.TokenLiteral())
+	}
+}
+
+func TestParsingPrefixExpressions(t *testing.T) {
+	prefixTests := []struct {
+		input        string
+		operator     string
+		integerValue int64
+	}{
+		{"!5;", "!", 5},
+		{"-15;", "-", 15},
+	}
+
+	for _, tt := range prefixTests {
+		p := New(lexer.New(tt.input))
+		program := p.ParseProgram()
+		checkParserErrors(t, p)
+
+		if len(program.Statements) != 1 {
+			t.Fatalf("program does not contain %d statements, found %d", 1,
+				len(program.Statements))
+		}
+
+		stmt, ok := program.Statements[0].(*ast.ExpressionStatement)
+		if !ok {
+			t.Fatalf("program.Statements[0] not *ast.ExpressionStatement, found %T",
+				program.Statements[0])
+		}
+		_ = stmt
 	}
 }
