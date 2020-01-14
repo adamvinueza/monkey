@@ -15,15 +15,16 @@ syntax trees. That's because a computer program is in general a list of
 statements, and each statement is representable as an abstract syntax tree.
 
 So statements are abstract syntax trees, and there's nothing especially
-complicated about trees. So far I've worked with only LET statements and
-expressions, although I peeked ahead and saw BLOCK statements, which are used
-when parsing IF expressions. But what I'm trying to say is that there aren't
-that many different kinds of statements, and I think everything that isn't a LET
-statement is an expression, meaning it produces a value. This vastly simplifies
-parsing, by the way. A surprising consequence is that languages with functions
-as expressions ("first-class objects") are simpler and easier to write parsers
-for than languages without.
+complicated about trees. So far I've worked with only LET and RETURN statements
+and wth expressions, although I peeked ahead and saw BLOCK statements, which are
+used when parsing IF expressions. But what I'm trying to say is that there
+aren't that many different kinds of statements, and I think everything that
+isn't a LET statement is an expression, meaning it produces a value. This vastly
+simplifies parsing, by the way. A surprising consequence is that languages with
+functions as expressions ("first-class objects") are simpler and easier to write
+parsers for than languages without.
 
 ## The LOWEST precedence pseudo-operator
 
 Trying to understand how this works. More soon.
+
