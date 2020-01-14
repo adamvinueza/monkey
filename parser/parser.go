@@ -47,8 +47,8 @@ func New(l *lexer.Lexer) *Parser {
 	return p
 }
 
-// ParseProgram parses program text and returns an abstract syntax tree
-// representing the program.
+// ParseProgram parses program text and returns a Program, which contains a
+// slice of abstract syntax trees.
 func (p *Parser) ParseProgram() *ast.Program {
 	program := &ast.Program{}
 	program.Statements = []ast.Statement{}
