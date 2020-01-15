@@ -24,7 +24,15 @@ simplifies parsing, by the way. A surprising consequence is that languages with
 functions as expressions ("first-class objects") are simpler and easier to write
 parsers for than languages without.
 
-## The LOWEST precedence pseudo-operator
+## Pratt parsing
 
-Trying to understand how this works. More soon.
+Started reading Ball's discussion of Pratt parsing, and walked through the
+example he gave, which I understand _mostly_ but not completely: I get all the
+individual steps, but I don't see the overall picture clearly just yet.
 
+I've started reading about Pratt parsing by way of familiarizing myself with it,
+hoping that will help. Eli Bendersky [has a good article about
+it](https://eli.thegreenplace.net/2010/01/02/top-down-operator-precedence-parsing),
+so I'm starting with that. (There's also a [good
+article](https://effbot.org/zone/simple-top-down-parsing.htm) he references by
+Frederick Lundh, which I plan to read.)
