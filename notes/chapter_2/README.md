@@ -31,8 +31,14 @@ example he gave, which I understand _mostly_ but not completely: I get all the
 individual steps, but I don't see the overall picture clearly just yet.
 
 I've started reading about Pratt parsing by way of familiarizing myself with it,
-hoping that will help. Eli Bendersky [has a good article about
+hoping that will help. Eli Bendersky [has an article about
 it](https://eli.thegreenplace.net/2010/01/02/top-down-operator-precedence-parsing),
-so I'm starting with that. (There's also a [good
-article](https://effbot.org/zone/simple-top-down-parsing.htm) he references by
-Frederick Lundh, which I plan to read.)
+that's based on [another](https://effbot.org/zone/simple-top-down-parsing.htm)
+by Frederick Lundh; the problem with those articles is that both involve what
+looks to me like fairly convoluted and hacky Python 2 code; I want code I can
+read fairly easily.
+
+Today I happened on Bob Nystrom's [article on Pratt parsing]() which is much, much
+better. The code is in Java, which is super verbose but in Nystrom's hand is
+very easy to read; and his discussion seems to be a _lot_ cleaner.
+
